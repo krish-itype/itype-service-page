@@ -57,4 +57,9 @@ Desktop.ini
 
 # Local visual-reference captures
 live-*.png
+reference-*.png
+local-*.png
+compare-*.png
+verify-*.png
+final-local-*.png
 

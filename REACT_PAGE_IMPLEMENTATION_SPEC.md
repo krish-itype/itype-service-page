@@ -6,7 +6,7 @@
 - **Target page:** `https://itypedesigns.com/service-based-website-development-company/`
 - **Source page:** the existing WordPress/Elementor page at the same URL.
 - **Scope status:** confirmed by the project owner.
-- **Implementation status:** not started.
+- **Implementation status:** Parts 0-14 are complete. Part 15 UI and submission states are complete; the production hosted-form endpoint is still required. Part 16 local QA is complete; production deployment and delivery verification remain.
 - **Deployment target:** the existing RunCloud-managed server and existing `itypedesigns.com` domain.
 - **Last reviewed:** 5 November 2026.
 
@@ -54,7 +54,7 @@ The new page must:
 
 - **Framework:** Next.js with React and TypeScript.
 - **Rendering:** static export; no long-running Node.js server in production.
-- **Styling:** Tailwind CSS plus a small amount of page-scoped CSS where exact selectors, pseudo-elements, or animations require it.
+- **Styling:** Tailwind CSS utilities in React components. `globals.css` is limited to Tailwind theme declarations, font loading, resets, and truly global defaults. Component CSS files are not allowed unless the owner explicitly approves an exception.
 - **Component theme library:** none. DaisyUI must not be installed for this recreation.
 - **Interactions:** small React components; no jQuery or Elementor runtime.
 - **Forms:** Formspree, subject to the owner providing or approving the production form endpoint.
@@ -99,6 +99,18 @@ Verified external/runtime dependencies on the current page include:
 The React version should replace these page-level dependencies with native React implementations or focused packages. It must not load Elementor, jQuery, WordPress emoji scripts, or WordPress page CSS.
 
 ## 6. Brand and design system
+
+### Primary desktop visual reference
+
+- Reference file: [`references/desktop-live-page-1920x1080.png`](references/desktop-live-page-1920x1080.png).
+- Part 4 reference: [`references/image2.png`](references/image2.png), supplied by the project owner as the close visual baseline for the trust-strip boundary and website-problems section.
+- Part 5 reference: [`references/image3.png`](references/image3.png), supplied by the project owner as the desktop visual baseline for the website-development-services section.
+- Future section reference: [`references/image4.png`](references/image4.png), supplied by the project owner for the website-review CTA and the following business-growth section.
+- Captured from the live page on 5 November 2026 at a 1920 x 1080 screen size.
+- Use this image as the primary visual baseline for the header, hero, consultation form, and trust strip while implementing Parts 1-3.
+- Match the page content only. Browser chrome, the Windows taskbar, the Windows activation watermark, and other operating-system UI in the capture are not part of the website.
+- The page's floating WhatsApp control is part of the website and remains in scope for Part 14.
+- Primary copy must render in the same solid black/near-black treatment as the reference; orange is reserved for the source's accent and highlight treatments.
 
 ### Visual-fidelity requirement
 
@@ -615,6 +627,7 @@ Do not directly edit RunCloud-generated Nginx files because RunCloud can overwri
 - Compare the React build with the current page at desktop, tablet, and mobile widths.
 - Preserve brand, content order, hierarchy, and CTA prominence.
 - Improvements are allowed for accessibility, spacing consistency, mobile usability, and performance.
+- Run visual comparisons in a clean browser profile or an Incognito window with extensions disabled. Attributes such as `bis_skin_checked`, `bis_register`, or `__processed_*` are injected by browser/security extensions and can cause a development-only React hydration warning even when the server and client application markup match.
 
 ### SEO/deployment
 
@@ -666,4 +679,193 @@ The page is complete when:
 8. Run type checks, production build, accessibility checks, and responsive visual QA.
 9. Prepare the RunCloud static artifact and Nginx rule.
 10. Deploy to staging, obtain approval, switch the single production path, and verify rollback.
+
+## 20. UI implementation parts
+
+The page will be implemented and approved one part at a time. Work must not move to the next part until the current part has been compared with the live page at its required reference widths and marked complete here.
+
+### Status legend
+
+- `[x]` Complete and verified.
+- `[~]` In progress.
+- `[ ]` Not started.
+
+### Parts checklist
+
+- `[x]` **Part 0 — Project foundation and assets**
+  - Next.js static export configured for `/service-based-website-development-company/`.
+  - Tailwind CSS available without DaisyUI.
+  - Black logo, white logo, and site icon stored locally.
+  - Production build generates `frontend/out`.
+- `[x]` **Part 1 — Header**
+  - White header surface.
+  - Exact black-logo placement and responsive scaling.
+  - Desktop telephone link with phone icon.
+  - Orange consultation CTA.
+  - Mobile phone visibility and CTA overflow behavior matched to the source.
+  - Verify at 390, 768, 1024, and 1440 px.
+- `[x]` **Part 2 — Hero and primary consultation form**
+  - Grid background, eyebrow, headline treatment, intro, benefit list, dark form panel, and form controls.
+- `[x]` **Part 3 — Trust strip**
+  - Four dark-strip trust statements and check icons.
+- `[x]` **Part 4 — Website problems section**
+  - Section heading and six problem/consequence items.
+- `[x]` **Part 5 — Website development services**
+  - Six numbered service entries with exact typography, dividers, and responsive behavior.
+- `[x]` **Part 6 — Website review CTA**
+  - Orange callout, consultation trigger, and trust statements.
+- `[x]` **Part 7 — Business-growth benefits**
+  - Six benefit items and supporting copy.
+- `[x]` **Part 8 — Four-step process**
+  - Numbered consultation-to-support process layout.
+- `[x]` **Part 9 — Before/after business-value comparison**
+  - Negative and desired-state comparison presentation.
+- `[x]` **Part 10 — Results and statistics**
+  - Lead-generator result content and four counters.
+- `[x]` **Part 11 — Testimonials**
+  - Verified testimonial content, ratings, and responsive carousel/grid behavior.
+- `[x]` **Part 12 — FAQ accordion**
+  - Six verified questions and answers with accessible open/close behavior.
+- `[x]` **Part 13 — Final CTA**
+  - Review points, telephone action, quote CTA, and trust copy.
+- `[x]` **Part 14 — Footer and floating contact action**
+  - White logo, contact details, existing-site navigation, copyright, and floating WhatsApp action.
+- `[~]` **Part 15 — Consultation modal and submission states**
+  - Accessible modal, validation, loading, success, failure, and hosted form endpoint integration.
+- `[~]` **Part 16 — Final visual regression and production readiness**
+  - Full-page comparisons at 390, 768, 1024, and 1440 px.
+  - Accessibility, metadata, analytics, build, RunCloud artifact, and rollback verification.
+
+### Part completion rule
+
+Each part is complete only when:
+
+1. Its source markup and computed styles have been inspected or measured from the live page.
+2. Desktop and mobile layouts match the corresponding live reference without an obvious visual difference.
+3. Interactive states for that part work with keyboard and pointer input.
+4. TypeScript and the production static build pass.
+5. The part status and any approved deviations are recorded in this section.
+
+### Part 1 verification record
+
+- Completed on 5 November 2026.
+- Live header markup and Elementor CSS were inspected directly.
+- The exact live logo and phone SVG path are used.
+- Pixel bounds for the header, content container, logo, phone link, and consultation CTA were compared at 390, 768, 1024, 1440, and 1536 px.
+- Header height, container placement, phone placement, CTA placement, button dimensions, and CTA typography match the live computed values at every measured width.
+- The phone uses live black `#000000`; the CTA uses live white `#ffffff` on orange `#fe3100`.
+- Live Archivo typography is matched: phone `16px/24px` at weight `700`; CTA `15px/22.5px` on mobile, `16px/24px` through 1480 px, and `12.8px/19.2px` above 1480 px at weight `600`.
+- Mobile and tablet padding, desktop padding, breakpoint container widths, and vertical scrollbar reservation reproduce the live header geometry.
+- Responsive logo placement was reverified across 320, 375, 390, 499, 500, 501, 550, 598, 599, 600, 767, 768, 769, 900, 1023, 1024, 1025, 1280, 1439, 1440, 1479, 1480, 1481, 1536, and 1920 px.
+- The header now reproduces the live nested container, flex-basis, flex-shrink, wrapping, and direct `100% / 73% / 36%` responsive logo sizing instead of using compensating logo-width approximations.
+- Logo horizontal position and width match the live computed bounds at every measured width; vertical bounds differ only by subpixel rasterization.
+- Header component styling is implemented with Tailwind utilities; no header CSS file remains.
+- No approved visual deviations.
+
+### Part 2 verification record
+
+- Completed on 5 November 2026.
+- The live hero markup, Elementor CSS, responsive rules, font declarations, form controls, and SVG check icon were inspected directly.
+- The hero uses the measured `#f4f4f2` surface, two-axis 60 px grid, `0.9` grid opacity, exact responsive container widths, and the source column proportions.
+- Headline, orange inline highlight, intro, benefit copy, divider, consultation card, fields, select control, submit button, and response-time copy reproduce the live typography, colors, spacing, borders, and shadow.
+- Primary copy and list text render in the source's solid black treatment; orange and white remain limited to their measured accent treatments.
+- Form placeholders reproduce the live black color at `0.6` opacity.
+- Layout and element bounds were compared directly against the live page at 390, 500, 501, 768, 769, 1024, 1440, and 1920 px. Section, columns, copy blocks, card, controls, and text positions match, apart from normal subpixel font rasterization.
+- The orange eyebrow and introductory paragraph were reverified at 390, 500, 501, 600, 768, 769, 1024, 1025, 1440, 1480, 1481, and 1920 px. Their rendered text bounds and line wrapping now match the live page exactly; the source curly apostrophe and eyebrow `95%` maximum width/non-shrinking flex behavior are preserved.
+- Responsive transitions at 500/501 px, 768/769 px, 1024/1025 px, and 1480/1481 px follow the source page rules.
+- All Part 2 component styling is implemented with Tailwind utilities; no component CSS file or DaisyUI dependency is used.
+- Keyboard-focus treatment is present for the form controls and submit button. Part 15 now provides validation and explicit submission states; production delivery activates when `NEXT_PUBLIC_FORMSPREE_ENDPOINT` is supplied.
+- ESLint and the Next.js production static build pass.
+- No approved visual deviations.
+
+### Part 3 verification record
+
+- Completed on 5 November 2026.
+- The live trust-strip markup, computed styles, check SVG, wrapping rules, responsive container widths, inter-item spacing, and dividers were inspected directly.
+- The source black surface, `#ff3d00` check icons, white Archivo `13px/700` text, tracking, line heights, 20 px vertical padding, and light dividers are reproduced with Tailwind utilities.
+- The four source labels and their order are preserved exactly.
+- Element bounds and relevant computed styles were compared directly with the live page at 390, 500, 501, 600, 768, 769, 1024, 1025, 1440, 1480, 1481, and 1920 px, with zero geometry or relevant-style mismatches above the 0.11 px comparison tolerance.
+- The source's responsive wrapping is preserved, including narrow-mobile single-column rows, the two-column layout below 768 px where space allows, the 3+1 wrap at constrained tablet/desktop container widths, and the single-row layout at wider source breakpoints.
+- All Part 3 styling is implemented with Tailwind utilities; no component CSS file or DaisyUI dependency is used.
+- No approved visual deviations.
+
+### Part 4 verification record
+
+- Completed on 5 November 2026.
+- The owner-supplied `references/image2.png` was inspected and used as the primary desktop visual reference for this part.
+- The live section markup, computed styles, responsive container rules, eyebrow SVG and divider, split-color heading, introductory copy, six problem cells, cross SVG, shared borders, and grid row behavior were inspected directly.
+- All six titles, descriptions, punctuation, curly apostrophes, emphasized phrases, and their order match the live source exactly.
+- The warm `#f4f4f2` surface, Archivo and Inter typography, muted heading text, white problem cells, `#d4d4d4` borders, and orange `#ff3d00` emphasis are reproduced with Tailwind utilities.
+- Element bounds and relevant computed styles were compared directly against the live page at 390, 500, 501, 600, 768, 769, 1024, 1025, 1440, 1480, 1481, and 1920 px, with zero mismatches above the 0.13 px subpixel comparison tolerance.
+- The one-column mobile layout, two-column layout from 501 px, equal first grid rows, collapsed shared borders, responsive heading widths, and source line wrapping are preserved.
+- All Part 4 styling is implemented with Tailwind utilities; no component CSS file or DaisyUI dependency is used.
+- No approved visual deviations.
+
+### Part 5 verification record
+
+- Completed on 5 November 2026.
+- The owner-supplied `references/image3.png` was inspected and used as the primary desktop visual reference; `references/image4.png` was inspected and reserved for the following website-review CTA and business-growth work.
+- The implementation checklist was corrected to follow the live page order: website development services now immediately follow the website-problems section, while the before/after transformation remains later in the page.
+- The live section markup, Elementor CSS, computed styles, responsive container rules, eyebrow SVG and divider, split-color heading, introductory copy, six service cells, number treatment, shared borders, and hover behavior were inspected directly.
+- All six numbers, service titles, descriptions, punctuation, and their order match the live source exactly.
+- The black surface, Archivo and Inter typography, white and muted-gray text, `#333333` cell borders, outlined numbers, translucent hover surface, and orange hover stroke are reproduced with Tailwind utilities.
+- Element bounds and relevant computed styles were compared directly against the live page at 390, 500, 501, 600, 768, 769, 1024, 1025, 1440, 1480, 1481, and 1920 px, with zero mismatches above the 0.13 px subpixel comparison tolerance.
+- The one-column mobile grid, two-column intermediate grid, three-column layout from 769 px, equal explicit rows, responsive heading and intro widths, source line wrapping, and exact breakpoint border behavior are preserved.
+- All Part 5 styling is implemented with Tailwind utilities; no component CSS file or DaisyUI dependency is used.
+- No approved visual deviations.
+
+### Part 6 verification record
+
+- Completed on 5 November 2026.
+- The owner-supplied `references/image4.png` was inspected and used as the primary desktop visual reference for the website-review CTA.
+- The live section markup, Elementor CSS, computed styles, responsive container widths, heading and intro widths, button treatment, trust-list wrapping, icon geometry, and interactive states were inspected directly.
+- The heading, supporting sentence, button label, and all three trust statements match the live source exactly.
+- The source `#ff3d00` surface, white Archivo heading, white Inter supporting copy, white square button, and compact trust typography are reproduced with Tailwind utilities.
+- Element bounds, copy, and relevant computed styles were compared directly against the live page at 390, 500, 501, 600, 768, 769, 1024, 1025, 1440, 1480, 1481, and 1920 px, with zero mismatches above the 0.13 px subpixel comparison tolerance.
+- The narrow-mobile three-row trust layout, 501 px two-row transition, wider single-row treatment, exact responsive content widths, and source button hover/focus colors are preserved.
+- The CTA opens the accessible consultation modal and retains the hero-form anchor as its no-JavaScript fallback.
+- All Part 6 styling is implemented with Tailwind utilities; no component CSS file or DaisyUI dependency is used.
+- ESLint and the Next.js production static build pass.
+- No approved visual deviations.
+
+### Part 7 verification record
+
+- Completed on 5 November 2026.
+- The owner-supplied `references/Image5.png` was inspected and used as the primary desktop visual reference for the business-growth benefits section.
+- The live section markup, Elementor CSS, computed styles, responsive container rules, eyebrow treatment, split-color heading, grid behavior, six card layouts, exact SVG paths, shared borders, and pointer state were inspected directly.
+- The heading, all six benefit titles, descriptions, punctuation, and their order match the live source exactly.
+- The white surface, Archivo and Inter typography, black icon tiles, white icons, `#e6e6e6` borders, muted heading text, and card spacing are reproduced with Tailwind utilities.
+- Element bounds, content, and relevant computed styles were compared directly against the live page at 390, 400, 401, 500, 501, 502, 600, 768, 769, 1024, 1025, 1440, 1480, 1481, and 1920 px, with zero mismatches above the 0.13 px subpixel comparison tolerance.
+- The one-column mobile grid, two-column layout from 501 px, three-column layout from 769 px, explicit equal grid rows, responsive heading widths, natural source line wrapping, and exact shared-border transitions are preserved.
+- The source card pointer state was verified and remains visually unchanged, matching the live computed background color.
+- All Part 7 styling is implemented with Tailwind utilities; no component CSS file or DaisyUI dependency is used.
+- ESLint and the Next.js production static build pass.
+- No approved visual deviations.
+
+### Parts 8-14 verification record
+
+- Completed on 5 November 2026 using the owner-supplied full-page reference and direct live-page inspection.
+- The four-step process, before/after transformation, four animated statistics, six verified client reviews, six verified FAQ entries, final consultation CTA, full footer, tablet/mobile action bar, and floating WhatsApp control are implemented.
+- Section, container, heading, panel, card, accordion, form, and footer bounds were measured against the live page at 390, 501, 769, 1025, 1481, and 1920 px. The implemented responsive transitions and measured geometry match within normal subpixel font/layout tolerance.
+- The source one-column, two-column, and four-column transitions are preserved, including the source's wrapped-row heights and tablet footer behavior.
+- Testimonials use the six exact live quotes and company names. The carousel is stable, manually controlled, swipe-capable, keyboard operable, and does not auto-rotate.
+- The FAQ uses accessible buttons and regions, permits only one open answer, and starts with the first answer open as in the source.
+- Counters expose final server-rendered values, animate once when visible, and skip animation for reduced-motion users.
+- The final CTA, footer contact details, phone links, email link, white logo, and existing source navigation copy are present.
+- All styling remains in Tailwind utilities; DaisyUI and component CSS were not added.
+
+### Part 15 local implementation record
+
+- The header, website-review CTA, and mobile action bar open one native accessible consultation dialog.
+- Native dialog focus containment, Escape closing, close-button behavior, backdrop closing, body-scroll locking, and focus restoration are available without an additional modal package.
+- Hero, final CTA, and modal forms share one typed form component with browser validation, disabled/loading state, success, delivery-error, and unconfigured-endpoint states.
+- Form submissions include source, page URL, UTM values, and a honeypot field. Analytics hooks push modal and form events to an existing `dataLayer` when one is present.
+- The production endpoint is intentionally not invented. Set `NEXT_PUBLIC_FORMSPREE_ENDPOINT` from `frontend/.env.example`, rebuild, and complete a real delivery test before changing Part 15 to complete.
+
+### Part 16 local verification record
+
+- ESLint, TypeScript, and the Next.js production static export pass.
+- The production export was served through the nested target path and tested with client-side JavaScript enabled.
+- Modal, FAQ, carousel, form fallback, image loading, unique IDs, metadata, canonical URL, and Service/FAQ JSON-LD passed the clean-browser smoke test with no console errors.
+- Full responsive geometry was compared at the measured source breakpoints. Production RunCloud routing, analytics-provider confirmation, real form delivery, indexing approval, and rollback verification remain deployment tasks.
 
